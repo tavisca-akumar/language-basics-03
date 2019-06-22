@@ -40,8 +40,177 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
 
         public static int[] SelectMeals(int[] protein, int[] carbs, int[] fat, string[] dietPlans)
         {
-            // Add your code here.
+            int[] calories = new int[protein.Length];
+            for (int i = 0; i < carbs.Length; i++)
+            {
+                calories[i] = 5 * (carbs[i] + protein[i])+ 9 * fat[i];
+            }
+
+          
+            int[] results = new int[dietPlans.Length];
+
+            for (int i = 0; i < dietPlans.Length; i++)
+            {
+                string str = dietPlans[i];
+                ArrayList ans = new ArrayList();
+                if (str.Length > 1)
+                {
+                    for (int j = 0; j < str.Length; j++)
+                    {
+                        ArrayList ans1 = res(str[j].ToString(), protein, carbs, fat, calories, ans);
+
+                      
+                        if (ans1.Count == 1)
+                        {
+                            results[i] = (int)ans1[0];
+                            break;
+                        }
+
+                       
+                        else
+                        {
+                            ans = ans1;
+                        }
+                        results[i] = (int)ans1[0];
+                    }
+                }
+
+               
+                else if (str.Length == 1)
+                {
+                    results[i] = (int)res(str, protein, carbs, fat, calories)[0];
+                }
+            }
+
+            return results;
+
             throw new NotImplementedException();
+        }
+        
+        public static ArrayList Max(int[] arr, ArrayList Index)
+        {
+
+            int max = int.MinValue;
+            ArrayList result = new ArrayList();
+
+            if (Index != null && Index.Count != 0)
+            {
+                foreach (object o in Index)
+                {
+                    if (arr[(int)o] > max)
+                    {
+                        max = arr[(int)o];
+                        result = new ArrayList();
+                        result.Add((int)o);
+                    }
+                    else if (arr[(int)o] == max)
+                    {
+                        result.Add((int)o);
+                    }
+                }
+
+            }
+            else
+            {
+
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    if (arr[i] > max)
+                    {
+                        max = arr[i];
+                        result = new ArrayList();
+                        result.Add(i);
+                    }
+                    else if (arr[i] == max)
+                    {
+                        result.Add(i);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static ArrayList Min(int[] arr, ArrayList Index)
+        {
+            int min = int.MaxValue;
+            ArrayList ind = new ArrayList();
+            if (Index != null && Index.Count > 0)
+            {
+
+                foreach (object o in Index)
+                {
+                    if (arr[(int)o] < min)
+                    {
+                        min = arr[(int)o];
+                        ind = new ArrayList();
+                        ind.Add((int)o);
+                    }
+                    else if (arr[(int)o] == min)
+                    {
+                        ind.Add((int)o);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    if (arr[i] < min)
+                    {
+                        min = arr[i];
+                        ind = new ArrayList();
+                        ind.Add(i);
+                    }
+                    else if (arr[i] == min)
+                    {
+                        ind.Add(i);
+                    }
+                }
+            }
+
+            return ind;
+        }
+        public static ArrayList res(string str, int[] protein, int[] carbs, int[] fat, int[] calories, ArrayList Index=null)
+        {
+            ArrayList result= new ArrayList();
+
+             if (str.Equals("p"))
+            {
+                result = Min(protein, Index);
+            }
+            else if (str.Equals("P"))
+            {
+                result = Max(protein, Index);
+            }
+            else if (str.Equals("c"))
+            {
+                result = Min(carbs, Index);
+            }
+            else if (str.Equals("C"))
+            {
+                result = Max(carbs, Index);
+            }
+            else if (str.Equals("f"))
+            {
+                result = Min(fat, Index);
+            }
+            else if (str.Equals("F"))
+            {
+                result = Max(fat, Index);
+            }
+            else if (str.Equals("t"))
+            {
+                result = Min(calories, Index);
+            }
+            else if (str.Equals("T"))
+            { 
+                result = Max(calories, Index);
+            }
+
+
+            return result;
+        
         }
     }
 }
